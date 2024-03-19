@@ -1,0 +1,11 @@
+Red Virtual (VNet):
+Una red virtual en Azure que proporciona aislamiento de red para los recursos desplegados.
+Subredes dentro de la VNet para organizar y segmentar los recursos.
+
+Máquina Virtual (VM):
+Una instancia de máquina virtual en Azure con un sistema operativo específico.
+Configuraciones como tamaño de la VM, nombre, ubicación, credenciales de acceso, etc.
+
+Grupo de Seguridad de Red (NSG):
+Un grupo de seguridad de red que contiene reglas de seguridad para controlar el tráfico de red hacia la máquina virtual.
+Reglas que permiten o deniegan el tráfico basado en puertos, direcciones IP, protocolos, etc.
