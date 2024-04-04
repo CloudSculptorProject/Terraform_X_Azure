@@ -93,3 +93,8 @@ resource "azurerm_network_interface" "example" {
     public_ip_address_id          = azurerm_public_ip.example[count.index].id
   }
 }
+
+output "public_ip_addresses" {
+  description = "Public IP addresses of the created virtual machines"
+  value       = { for ip in azurerm_public_ip.example : ip.name => ip.ip_address }
+}
