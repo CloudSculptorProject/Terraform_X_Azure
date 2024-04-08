@@ -38,9 +38,8 @@ resource "azurerm_managed_disk" "example" {
   location             = azurerm_resource_group.storage_rg.location
   resource_group_name  = azurerm_resource_group.storage_rg.name
   storage_account_type = "Standard_LRS"
-  create_option        = "Import"
+  create_option        = "Empty"
   disk_size_gb         = 128  # Reemplaza con el tamaño adecuado para tu disco
-  import_source_uri    = "https://pruebassssssssssssss.blob.core.windows.net/vhd/WindowsDaw.VHD"
 }
 
 # Creación de las máquinas virtuales solicitadas
@@ -50,14 +49,14 @@ resource "azurerm_virtual_machine" "example" {
   name                = "vm${count.index}"
   resource_group_name = azurerm_resource_group.storage_rg.name
   location            = azurerm_resource_group.storage_rg.location
-  network_interface_ids = [azurerm_network_interface.example[count.index].id]
+  network_interface_id = azurerm_network_interface.example[count.index].id
   vm_size             = "Standard_B2s"
 
   storage_os_disk {
     name              = "myosdisk${count.index}"
     caching           = "ReadWrite"
-    create_option     = "Attach"
-    managed_disk_id   = azurerm_managed_disk.example[count.index].id  # Referencia al disco administrado creado
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
   }
 
   os_profile {
@@ -85,9 +84,24 @@ resource "azurerm_network_interface" "example" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.example.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.example[count.index].id
   }
 }
+
+# Creación de una dirección IP pública para cada máquina virtual
+resource "azurerm_public_ip" "example" {
+  count                = var.vm_count
+  name                 = "example-pip${count.index}"
+  location             = azurerm_resource_group.storage_rg.location
+  resource_group_name  = azurerm_resource_group.storage_rg.name
+  allocation_method    = "Dynamic"
+}
+
+# Asignación de la dirección IP pública a la interfaz de red
+resource "azurerm_network_interface" "example" {
+  count = var.vm_count
+
+  name                = "example-nic${count.index}"
+  location            = az
 
 # Output para mostrar las direcciones IP públicas de las máquinas virtuales
 output "public_ips" {
