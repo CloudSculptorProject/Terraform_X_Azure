@@ -31,23 +31,16 @@ resource "azurerm_subnet" "example" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_public_ip" "example" {
-  count               = var.vm_count
-  name                = "example-public-ip${count.index}"
-  resource_group_name = azurerm_resource_group.storage_rg.name
-  location            = azurerm_resource_group.storage_rg.location
-  allocation_method   = "Dynamic"
-}
-
 # Agrega el recurso azurerm_managed_disk para representar tu VHD existente
 resource "azurerm_managed_disk" "example" {
-  count                 = var.vm_count
-  name                  = "example-disk${count.index}"
-  location              = azurerm_resource_group.storage_rg.location
-  resource_group_name   = azurerm_resource_group.storage_rg.name
-  storage_account_type  = "Standard_LRS"
-  create_option         = "Attach"
-  managed_disk_id       = "/subscriptions/<subscription_id>/resourceGroups/<resource_group_name>/providers/Microsoft.Compute/disks/<disk_name>"  # Reemplaza con la ruta real de tu disco
+  count                = var.vm_count
+  name                 = "example-disk${count.index}"
+  location             = azurerm_resource_group.storage_rg.location
+  resource_group_name  = azurerm_resource_group.storage_rg.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Import"
+  disk_size_gb         = 128  # Reemplaza con el tamaño adecuado para tu disco
+  import_source_uri    = "https://pruebassssssssssssss.blob.core.windows.net/vhd/WindowsDaw.VHD"
 }
 
 # Creación de las máquinas virtuales solicitadas
