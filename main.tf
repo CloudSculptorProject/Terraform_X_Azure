@@ -3,7 +3,6 @@ provider "azurerm" {
   features {}
 }
 
-
 # Pregunta al usuario por el número de Virtual Machines a crear
 variable "vm_count" {
   description = "Número de máquinas virtuales a crear"
@@ -15,7 +14,6 @@ resource "azurerm_resource_group" "storage_rg" {
   name     = "examen_DAW"
   location = "eastus"
 }
-
 
 # Creación del VNet en el Resource Group y ubicación especificados
 resource "azurerm_virtual_network" "example" {
@@ -41,28 +39,32 @@ resource "azurerm_public_ip" "example" {
   allocation_method   = "Dynamic"
 }
 
+# Agrega el recurso azurerm_managed_disk para representar tu VHD existente
+resource "azurerm_managed_disk" "example" {
+  count                 = var.vm_count
+  name                  = "example-disk${count.index}"
+  location              = azurerm_resource_group.storage_rg.location
+  resource_group_name   = azurerm_resource_group.storage_rg.name
+  storage_account_type  = "Standard_LRS"
+  create_option         = "Attach"
+  managed_disk_id       = "/subscriptions/<subscription_id>/resourceGroups/<resource_group_name>/providers/Microsoft.Compute/disks/<disk_name>"  # Reemplaza con la ruta real de tu disco
+}
+
 # Creación de las máquinas virtuales solicitadas
 resource "azurerm_virtual_machine" "example" {
-  count = var.vm_count
+  count               = var.vm_count
 
-  name                  = "vm${count.index}"
-  resource_group_name   = azurerm_resource_group.storage_rg.name
-  location              = azurerm_resource_group.storage_rg.location
+  name                = "vm${count.index}"
+  resource_group_name = azurerm_resource_group.storage_rg.name
+  location            = azurerm_resource_group.storage_rg.location
   network_interface_ids = [azurerm_network_interface.example[count.index].id]
-  vm_size               = "Standard_B2s"
-
-  storage_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2022-datacenter-azure-edition"
-    version   = "latest"
-  }
+  vm_size             = "Standard_B2s"
 
   storage_os_disk {
     name              = "myosdisk${count.index}"
     caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    create_option     = "Attach"
+    managed_disk_id   = azurerm_managed_disk.example[count.index].id  # Referencia al disco administrado creado
   }
 
   os_profile {
@@ -94,7 +96,7 @@ resource "azurerm_network_interface" "example" {
   }
 }
 
-output "public_ip_addresses" {
-  description = "Public IP addresses of the created virtual machines"
-  value       = { for ip in azurerm_public_ip.example : ip.name => ip.ip_address }
+# Output para mostrar las direcciones IP públicas de las máquinas virtuales
+output "public_ips" {
+  value = [azurerm_public_ip.example[*].ip_address]
 }
