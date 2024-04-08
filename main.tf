@@ -102,7 +102,7 @@ resource "azurerm_network_interface" "example" {
 
   name                = "example-nic${count.index}"
   location            = az
-
+}
 # Output para mostrar las direcciones IP públicas de las máquinas virtuales
 output "public_ips" {
   value = [azurerm_public_ip.example[*].ip_address]
