@@ -62,18 +62,6 @@ resource "azurerm_subnet" "windows_subnet" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-# Managed Disk creation for each VM
-resource "azurerm_managed_disk" "windows_managed_disk" {
-  count                = var.vm_count
-  name                 = "win-example-disk${count.index}"
-  location             = azurerm_resource_group.windows_rg.location
-  resource_group_name  = azurerm_resource_group.windows_rg.name
-  storage_account_type = "Standard_LRS"
-  create_option        = "Import"
-  disk_size_gb         = 128  # Replace with the appropriate size for your disk
-  import_source_uri    = "https://${azurerm_storage_account.windows_storage_account.name}.blob.core.windows.net/windowscontainer/WindowsDaw.VHD"
-}
-
 # Windows VM creation
 resource "azurerm_virtual_machine" "windows_vm" {
   count               = var.vm_count

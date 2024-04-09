@@ -62,18 +62,6 @@ resource "azurerm_subnet" "linux_subnet" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-# Managed Disk creation for each VM
-resource "azurerm_managed_disk" "linux_managed_disk" {
-  count                = var.linux_vm_count
-  name                 = "lin-example-disk${count.index}"
-  location             = azurerm_resource_group.linux_rg.location
-  resource_group_name  = azurerm_resource_group.linux_rg.name
-  storage_account_type = "Standard_LRS"
-  create_option        = "Import"
-  disk_size_gb         = 128  # Replace with the appropriate size for your disk
-  import_source_uri    = "https://${azurerm_storage_account.linux_storage_account.name}.blob.core.windows.net/linuxcontainer/LinuxDaw.VHD"
-}
-
 # Linux VM creation
 resource "azurerm_virtual_machine" "linux_vm" {
   count               = var.linux_vm_count
@@ -102,7 +90,9 @@ resource "azurerm_virtual_machine" "linux_vm" {
     computer_name  = "lin-vm${count.index}"
     admin_username = "Student"
     admin_password = "$Coo...D00"
-  }os_profile_linux_config {
+  }
+  
+  os_profile_linux_config {
     disable_password_authentication = false
   }
 }
