@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "linux_rg" {
 
 # Storage Account creation
 resource "azurerm_storage_account" "linux_storage_account" {
-  name                     = "vhdexamen"
+  name                     = "vhdexamen2"
   resource_group_name      = azurerm_resource_group.linux_rg.name
   location                 = azurerm_resource_group.linux_rg.location
   account_tier             = "Standard"
