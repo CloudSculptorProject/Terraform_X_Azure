@@ -128,3 +128,30 @@ resource "azurerm_public_ip" "windows_ip" {
 output "windows_public_ips" {
   value = [azurerm_public_ip.windows_ip[*].ip_address]
 }
+
+resource "azurerm_network_security_group" "app_nsg" {
+  name                = "app-nsg"
+  location            = 
+  resource_group_name = 
+
+# We are creating a rule to allow traffic on port 80
+  security_rule {
+    name                       = "Allow-Remote-Access"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "3389"
+    source_address_prefix      = "TU.DIRECCIÓN.IP"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "nsg_association" {
+  subnet_id                 = ASOCIAR A LA SUBNET PUBLICA DE LA VM
+  network_security_group_id = azurerm_network_security_group.app_nsg.id
+  depends_on = [
+    azurerm_network_security_group.app_nsg
+  ]
+}
