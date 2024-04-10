@@ -15,37 +15,6 @@ resource "azurerm_resource_group" "windows_rg" {
   location = "eastus"
 }
 
-# Storage Account creation
-resource "azurerm_storage_account" "windows_storage_account" {
-  name                     = "vhdexamen2"
-  resource_group_name      = azurerm_resource_group.windows_rg.name
-  location                 = azurerm_resource_group.windows_rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-# Container creation for Windows VHDs
-resource "azurerm_storage_container" "windows_container" {
-  name                  = "windowscontainer"
-  storage_account_name  = azurerm_storage_account.windows_storage_account.name
-  container_access_type = "private"
-}
-
-# Upload Windows VHDs to the storage container
-locals {
-  windows_file_paths = fileset("./vhdwindows", "**")
-}
-
-resource "azurerm_storage_blob" "windows_blob" {
-  for_each = { for p in local.windows_file_paths : p => p }
-
-  name                   = each.value
-  storage_account_name   = azurerm_storage_account.windows_storage_account.name
-  storage_container_name = azurerm_storage_container.windows_container.name
-  type                   = "Block"
-  source                 = each.value
-}
-
 # Virtual Network creation
 resource "azurerm_virtual_network" "windows_vnet" {
   name                = "winvnetexamen"
