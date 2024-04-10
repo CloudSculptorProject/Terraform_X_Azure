@@ -124,34 +124,34 @@ resource "azurerm_public_ip" "windows_ip" {
   allocation_method   = "Dynamic"
 }
 
-# Output the public IP addresses of the Windows VMs
-output "windows_public_ips" {
-  value = [azurerm_public_ip.windows_ip[*].ip_address]
-}
-
-resource "azurerm_network_security_group" "app_nsg" {
-  name                = "app-nsg"
-  location            = 
-  resource_group_name = 
-
-# We are creating a rule to allow traffic on port 80
+# Network Security Group creation for each VM
+resource "azurerm_network_security_group" "windows_nsg" {
+  count               = var.vm_count
+  name                = "win-nsg-${count.index}"
+  location            = azurerm_resource_group.windows_rg.location
+  resource_group_name = azurerm_resource_group.windows_rg.name
+  
   security_rule {
-    name                       = "Allow-Remote-Access"
+    name                       = "Allow-RDP-${count.index}"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "3389"
-    source_address_prefix      = "TU.DIRECCIÓN.IP"
+    source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
 }
 
-resource "azurerm_subnet_network_security_group_association" "nsg_association" {
-  subnet_id                 = ASOCIAR A LA SUBNET PUBLICA DE LA VM
-  network_security_group_id = azurerm_network_security_group.app_nsg.id
-  depends_on = [
-    azurerm_network_security_group.app_nsg
-  ]
+# Associate NSG with each VM's NIC
+resource "azurerm_network_interface_security_group_association" "nsg_association" {
+  count               = var.vm_count
+  network_interface_id = azurerm_network_interface.windows_nic[count.index].id
+  network_security_group_id = azurerm_network_security_group.windows_nsg[count.index].id
+}
+
+# Output the public IP addresses of the Windows VMs
+output "windows_public_ips" {
+  value = [azurerm_public_ip.windows_ip[*].ip_address]
 }
