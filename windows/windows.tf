@@ -41,12 +41,8 @@ resource "azurerm_virtual_machine" "windows_vm" {
   network_interface_ids = [azurerm_network_interface.windows_nic[count.index].id]
   vm_size             = "Standard_B2s"
 
-  storage_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2022-datacenter-azure-edition"
-    version   = "latest"
-  }
+  storage_image_id    = "<ID de la imagen personalizada>" 
+# Reemplaza esto con el ID de tu imagen personalizada
 
   storage_os_disk {
     name              = "win-myosdisk${count.index}"
