@@ -1,6 +1,6 @@
 # Resource Group creation
 resource "azurerm_resource_group" "windows_rg" {
-  name     = "examen_DAW"
+  name     = "CloudScuptor"
   location = "eastus"
 }
 
@@ -30,8 +30,7 @@ resource "azurerm_virtual_machine" "windows_vm" {
   network_interface_ids = [azurerm_network_interface.windows_nic[count.index].id]
   vm_size             = "Standard_B2s"
 
-  # Reemplaza esto con el ID de tu imagen personalizada
-  storage_image_id    =  ID DE LA IMAGEN
+  storage_image_id    =  var.ID
 
   storage_os_disk {
     name              = "win-myosdisk${count.index}"
