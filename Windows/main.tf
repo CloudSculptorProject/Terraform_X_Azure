@@ -1,6 +1,6 @@
 # Resource Group creation
 resource "azurerm_resource_group" "windows_rg" {
-  name     = "Maquinas-Virtuales"
+  name     = "Maquinas-Virtuales-Windows"
   location = "eastus"
 }
 
