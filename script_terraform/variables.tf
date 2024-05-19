@@ -1,4 +1,4 @@
 variable "vm_count" {
-  description = "Number of Windows virtual machines to create"
+  description = "Number of Virtual Machine you want to create"
   type        = number
 }
