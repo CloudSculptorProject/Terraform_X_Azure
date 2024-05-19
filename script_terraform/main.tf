@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "windows_rg" {
 data "azurerm_shared_image" "main" {
   name                = "VM_ISO"
   gallery_name        = "VM_Principal"
-  resource_group_name = "Pruebas"
+  resource_group_name = "ISOS"
 }
 
 # Virtual Network creation
