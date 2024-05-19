@@ -1,7 +1,14 @@
 # Resource Group creation
 resource "azurerm_resource_group" "windows_rg" {
-  name     = "CloudScuptor"
+  name     = "CloudSculptor"
   location = "eastus"
+}
+
+# Locate the existing custom image from the Shared Image Gallery
+data "azurerm_shared_image" "main" {
+  name                = "VM_ISO"
+  gallery_name        = "VM_Principal"
+  resource_group_name = "Pruebas"
 }
 
 # Virtual Network creation
@@ -30,7 +37,9 @@ resource "azurerm_virtual_machine" "windows_vm" {
   network_interface_ids = [azurerm_network_interface.windows_nic[count.index].id]
   vm_size             = "Standard_B2s"
 
-  storage_image_id    =  var.ID
+  storage_image_reference {
+    id = data.azurerm_shared_image.main.id
+  }
 
   storage_os_disk {
     name              = "win-myosdisk${count.index}"
