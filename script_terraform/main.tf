@@ -1,6 +1,6 @@
 # Resource Group creation
 resource "azurerm_resource_group" "windows_rg" {
-  name     = "CloudSculptor"
+  name     = "Maquinas-Virtuales"
   location = "eastus"
 }
 
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "windows_rg" {
 data "azurerm_shared_image" "main" {
   name                = "VM_ISO"
   gallery_name        = "VM_Principal"
-  resource_group_name = "ISOS"
+  resource_group_name = "CloudSculptor"
 }
 
 # Virtual Network creation
