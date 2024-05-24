@@ -20,8 +20,6 @@ Este proyecto se centra en el despliegue masivo de máquinas virtuales utilizand
 
 **-Monitoreo y gestión:** Implementar herramientas de monitoreo y gestión para supervisar el rendimiento y el estado de las máquinas virtuales desplegadas.
 
-**Terraform + Azure**
-
 **¿Qué es Terraform?**
 
 Terraform es una herramienta de código abierto desarrollada por HashiCorp que se utiliza para la automatización de la infraestructura. Permite a los usuarios definir y provisionar de manera declarativa la infraestructura y los servicios en la nube mediante la descripción de la configuración en un formato fácil de entender y mantener.
