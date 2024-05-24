@@ -30,6 +30,4 @@ Azure se refiere a Microsoft Azure, que es la plataforma de servicios en la nube
 
 <h2 align="center">Diseño Del Proyecto</h2>
 
-![image](https://github.com/CloudSculptorProject/Terraform_X_Azure/assets/156903952/8e68270d-7406-486d-bf1a-b262a9ff0ba7)
-
-
+<p align="center"> <img src="![image](https://github.com/CloudSculptorProject/Terraform_X_Azure/assets/156903952/8e68270d-7406-486d-bf1a-b262a9ff0ba7)"/> </p>
