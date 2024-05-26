@@ -5,9 +5,9 @@ resource "azurerm_resource_group" "windows_rg" {
 }
 
 # Locate the existing custom image from the Shared Image Gallery
-data "azurerm_shared_image" "main" {
-  name                = "VM_ISO"
-  gallery_name        = "VM_Principal"
+data "azurerm_shared_image" "main" { # Este bloque se utiliza para acceder a datos de recursos que ya existen en la infraestructura de Azure.  En este caso, está accediendo a una imagen compartida de Azure (Shared Image).
+  name                = "VM_ISO" # Especifica el nombre de la imagen compartida que quieres obtener.
+  gallery_name        = "VM_Principal" # Indica el nombre de la galería de imágenes (Compute Gallery) donde se encuentra la imagen
   resource_group_name = "CloudSculptor"
 }
 
