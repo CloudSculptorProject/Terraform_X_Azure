@@ -53,7 +53,7 @@ resource "azurerm_virtual_machine" "windows_vm" {
     admin_password = var.admin_password
   }
 
-  os_profile_windows_config {
+  os_profile_windows_config { # Este bloque de código completa la configuración del perfil del sistema operativo para una máquina virtual específicamente en el entorno de Windows en Azure
     provision_vm_agent        = true
     enable_automatic_upgrades = true
     timezone                  = "UTC"
