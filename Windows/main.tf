@@ -50,8 +50,8 @@ resource "azurerm_virtual_machine" "windows_vm" {
 
   os_profile {
     computer_name  = "win-vm${count.index}"
-    admin_username = "Student"
-    admin_password = "$Coob1...D00"
+    admin_username = var.admin_username
+    admin_password = var.admin_password
   }
 
   os_profile_windows_config {
