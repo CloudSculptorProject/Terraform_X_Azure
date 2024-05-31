@@ -49,8 +49,8 @@ resource "azurerm_virtual_machine" "windows_vm" {
 
   os_profile { # Este bloque de código se refiere a la configuración del perfil del sistema operativo (OS) para la máquina virtual en Azure.
     computer_name  = "win-vm${count.index}"
-    admin_username = var.admin_username
-    admin_password = var.admin_password
+    admin_username = "Student"
+    admin_password = "$Coob1...D00"
   }
 
   os_profile_windows_config { # Este bloque de código completa la configuración del perfil del sistema operativo para una máquina virtual específicamente en el entorno de Windows en Azure
