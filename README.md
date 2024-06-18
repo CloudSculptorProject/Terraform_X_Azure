@@ -1,7 +1,5 @@
-﻿<h1 align="center"> CloudSculptor 
-</br>
-<p>We Create, We integrate, We resolve</p>
-</h1>﻿
+﻿<h1 align="center"> CloudSculptor ﻿</h1>
+<h3 align="center"> <p>We Create, We integrate, We resolve</p> </h3>
 <p align="center"> <img src="https://github.com/CloudSculptorProject/Terraform_X_Azure/assets/156903952/875ba2cc-5da9-4e70-9feb-af9dc4cd0442"/> </p>
 
 
